@@ -13,6 +13,8 @@ Day1::List::List(){
 Day1::List::Node::Node(unsigned int input){
     value = input;
     next = nullptr;
+    simularityScore = 0;
+    simularityScoreCalculated = false;
 }
 
 // Destructors
@@ -78,4 +80,43 @@ unsigned int Day1::getTotalDiff(){
         node2 = node2->next;
     }
     return diff;
+}
+void Day1::calculateSimularityScore(){
+    List::Node* node1 = list1.head; //left list
+
+    while(node1 != nullptr){
+        List::Node* node2 = list2.head; //right list
+
+        // dont repeat work
+        if(!node1->simularityScoreCalculated){
+            while(node2 != nullptr){
+                if(node1->value == node2->value){
+                    node1->simularityScore++;
+                }
+                node2 = node2->next;
+            }
+            node1->simularityScoreCalculated = true;
+        }
+        
+        if(node1->next !=nullptr && node1->value == node1->next->value){
+            node1->next->simularityScore = node1->simularityScore;
+            node1->next->simularityScoreCalculated = true;
+        }
+        node1 = node1->next;
+    }
+}
+
+unsigned int Day1::getTotalSimularityScore(){
+    List::Node* node1 = list1.head; //left list
+
+    if(!node1->simularityScoreCalculated){
+        calculateSimularityScore();
+    }
+
+    unsigned int score = 0;
+    while(node1 != nullptr){
+        score += node1->value * node1->simularityScore;
+        node1 = node1->next;
+    }
+    return score;
 }

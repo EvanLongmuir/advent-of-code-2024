@@ -18,4 +18,6 @@ int main(){
     ReadFile.close();
 
     std::cout << day.getTotalDiff() << std::endl;
+
+    std::cout << day.getTotalSimularityScore() << std::endl;
 }

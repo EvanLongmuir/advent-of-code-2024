@@ -4,6 +4,9 @@ class Day1{
             struct Node{
                 unsigned int value;
                 Node* next;
+                unsigned int simularityScore;
+                bool simularityScoreCalculated;
+
                 Node(unsigned int input); //constructer
                 ~Node(); //destructer
             };
@@ -18,9 +21,11 @@ class Day1{
         List list2;
 
         unsigned int getDiff(List::Node* node1, List::Node* node2);
+        void calculateSimularityScore();
     public:
         void addNodePair(unsigned int value1, unsigned int value2);
         unsigned int getTotalDiff();
+        unsigned int getTotalSimularityScore();
 
         Day1();
         ~Day1();
