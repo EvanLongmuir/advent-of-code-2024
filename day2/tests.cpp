@@ -51,7 +51,44 @@ TEST_CASE("test report safe update value", "[safe]"){
         CHECK(report.safe == true);
     }
     
-    SECTION("unsafe decrease of 5"){
+    SECTION("1 unsafe decrease of 5"){
+        report.addLevel(8); //remove this one
+        report.addLevel(3);
+        report.addLevel(2);
+        report.addLevel(1);
+
+        CHECK(report.safe == true);
+    }
+    
+    SECTION("1 unsafe increase of 4"){
+        report.addLevel(1);
+        report.addLevel(2);
+        report.addLevel(6); //remove this one
+        report.addLevel(3);
+
+        CHECK(report.safe == true);
+    }
+    
+    SECTION("1 unsafe no change"){
+        report.addLevel(7);
+        report.addLevel(6); //remove either one
+        report.addLevel(6); //remove either one
+        report.addLevel(5);
+
+        CHECK(report.safe == true);
+    }
+    
+    SECTION("1 unsafe change direction"){
+        report.addLevel(7);
+        report.addLevel(6); //remove this one
+        report.addLevel(8);
+        report.addLevel(9);
+
+        CHECK(report.safe == true);
+    }
+
+    SECTION("2 unsafe decrease of 5"){
+        report.addLevel(12);
         report.addLevel(7);
         report.addLevel(2);
         report.addLevel(1);
@@ -59,26 +96,29 @@ TEST_CASE("test report safe update value", "[safe]"){
         CHECK(report.safe == false);
     }
     
-    SECTION("unsafe increase of 4"){
+    SECTION("2 unsafe increase of 4"){
         report.addLevel(1);
         report.addLevel(2);
         report.addLevel(6);
+        report.addLevel(10);
 
         CHECK(report.safe == false);
     }
     
-    SECTION("unsafe no change"){
+    SECTION("2 unsafe no change"){
         report.addLevel(7);
         report.addLevel(6);
         report.addLevel(6);
+        report.addLevel(6);
 
         CHECK(report.safe == false);
     }
     
-    SECTION("unsafe change direction"){
+    SECTION("2 unsafe change direction"){
         report.addLevel(7);
         report.addLevel(6);
         report.addLevel(8);
+        report.addLevel(6);
 
         CHECK(report.safe == false);
     }

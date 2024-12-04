@@ -9,7 +9,7 @@ class Day2{
                 Level* last;
                 bool safe;
 
-                bool spreadBool();
+                bool spreadBool(bool removed);
 
                 Level(int input);
                 ~Level();
