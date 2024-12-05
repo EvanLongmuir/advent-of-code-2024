@@ -11,6 +11,7 @@ Crossword::Letter::Letter(char letter){
 
 Crossword::Crossword(){
     words = 0;
+    xs = 0;
     head = nullptr;
 }
 
@@ -109,6 +110,28 @@ unsigned int Crossword::Letter::findWords(){
     return words;
 }
 
+bool Crossword::Letter::findX(){
+    if(value == 'M'){
+        if(diagL == nullptr || diagL->value != 'A') return false;
+        if(diagL->diagL == nullptr || diagL->diagL->value != 'S') return false;
+        
+        if(left->left->value == 'M' && up->up->value == 'S') return true;
+        if(left->left->value == 'S' && up->up->value == 'M') return true;
+
+        return false;
+    }
+    if(value == 'S'){
+        if(diagL == nullptr || diagL->value != 'A') return false;
+        if(diagL->diagL == nullptr || diagL->diagL->value != 'M') return false;
+        
+        if(left->left->value == 'M' && up->up->value == 'S') return true;
+        if(left->left->value == 'S' && up->up->value == 'M') return true;
+
+        return false;
+    }
+    return false;
+}
+
 unsigned int Crossword::addLetter(char letter){
     Crossword::Letter* newLetter = new Crossword::Letter(letter);
 
@@ -127,6 +150,8 @@ unsigned int Crossword::addLetter(char letter){
     newLetter->diagL = temp->up;
     newLetter->up = temp->diagR;
     if(temp->diagR != nullptr) newLetter->diagR = temp->diagR->right;
+
+    if(newLetter->findX()) xs++;
 
     return newLetter->findWords();
 }
@@ -149,4 +174,8 @@ void Crossword::addLine(std::string line){
 
 unsigned int Crossword::getWords() {
     return words;
+}
+
+unsigned int Crossword::getXs() {
+    return xs;
 }

@@ -18,17 +18,21 @@ class Crossword{
             bool findWordsUp();
             bool findWordsDiagR();
 
+            bool findX();
+
             Letter(char letter);
             ~Letter();
         };
         Letter* head;
 
         unsigned int words;
+        unsigned int xs;
 
         unsigned int addLetter(char letter);
     public:
         void addLine(std::string line);
         unsigned int getWords();
+        unsigned int getXs();
 
         Crossword();
         ~Crossword();

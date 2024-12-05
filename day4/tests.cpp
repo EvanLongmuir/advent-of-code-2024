@@ -344,4 +344,19 @@ TEST_CASE("add Line Function", "[addLine]"){
 
         CHECK(puzzle.words == 18);
     }
+
+    SECTION("part 2 example"){
+        puzzle.addLine(".M.S......");
+        puzzle.addLine("..A..MSMS.");
+        puzzle.addLine(".M.S.MAA..");
+        puzzle.addLine("..A.ASMSM.");
+        puzzle.addLine(".M.S.M....");
+        puzzle.addLine("..........");
+        puzzle.addLine("S.S.S.S.S.");
+        puzzle.addLine(".A.A.A.A..");
+        puzzle.addLine("M.M.M.M.M.");
+        puzzle.addLine("..........");
+
+        CHECK(puzzle.xs == 9);
+    }
 }

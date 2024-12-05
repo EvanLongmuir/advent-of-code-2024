@@ -14,5 +14,6 @@ int main(){
         puzzle.addLine(line);
     }
 
-    std::cout << puzzle.getWords() << std::endl;
+    std::cout << "words: " << puzzle.getWords() << std::endl;
+    std::cout << "Xs: " << puzzle.getXs() << std::endl;
 }
