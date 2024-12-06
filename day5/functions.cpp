@@ -110,6 +110,14 @@ void Manual::addRule(std::string line){
     return;
 }
 
+void Manual::Update::updateMiddleValue(){
+    Update::Page* tempPage = pages;
+    for(int i = numPages/2; i > 0; i--){
+        tempPage = tempPage->next;
+    }
+    middleValue = tempPage->value;
+}
+
 void Manual::addUpdate(std::string line){
     Update* newUpdate = new Update();
 
@@ -130,12 +138,7 @@ void Manual::addUpdate(std::string line){
         }
     }
 
-    // get middle value
-    Update::Page* tempPage = newUpdate->pages;
-    for(int i = newUpdate->numPages/2; i > 0; i--){
-        tempPage = tempPage->next;
-    }
-    newUpdate->middleValue = tempPage->value;
+    newUpdate->updateMiddleValue();
 
     // add new update to linked list
     if(updates == nullptr) updates = newUpdate;
@@ -170,43 +173,82 @@ void Manual::checkRules(){
 
         //go throgh all pages
         Update::Page* page = update->pages;
-        while(page != nullptr && update->valid){
+        while(page != nullptr){
 
             // go through all rules
             Rule* rule = rules;
-            while(rule != nullptr && update->valid){
+            while(rule != nullptr){
 
                 // if rule has same number in first position see if it passes
+                bool listChanged = false;
                 if(page->value == rule->rules[0]){
                     Update::Page* temp = page->last;
                     // loop through all pages before current page to look for broken rule
-                    while(temp != nullptr && update->valid){
-                        if(temp->value == rule->rules[1]) update->valid = false;
+                    while(temp != nullptr){
+                        if(temp->value == rule->rules[1]){
+                            update->valid = false;
+                            //remove temp from its position
+                            if(temp->last != nullptr) temp->last->next = temp->next;
+                            else updates->pages = temp->next;
+                            temp->next->last = temp->last;
+
+                            //place temp after current
+                            temp->next = page->next;
+                            temp->last = page;
+                            if(page->next != nullptr) page->next->last = temp;
+                            page->next = temp;
+
+                            page = update->pages;
+                            rule = rules;
+
+                            listChanged = true;
+                            break;
+                        }
                         temp = temp->last;
                     }
                 }
                 // if rule has same number in second position see if it passes
-                if(page->value == rule->rules[1]){
+                else if(page->value == rule->rules[1]){
                     Update::Page* temp = page->next;
                     // loop through all pages after current page to look for broken rule
-                    while(temp != nullptr && update->valid){
-                        if(temp->value == rule->rules[0]) update->valid = false;
+                    while(temp != nullptr){
+                        if(temp->value == rule->rules[0]){
+                            update->valid = false;
+                            //remove temp from its position
+                            temp->last->next = temp->next;
+                            if(temp->next != nullptr) temp->next->last = temp->last;
+
+                            //place temp before current
+                            temp->last = page->last;
+                            temp->next = page;
+                            if(page->last != nullptr) page->last->next = temp;
+                            else update->pages = temp;
+                            page->last= temp;
+
+                            page = update->pages;
+                            rule = rules;
+
+                            listChanged = true;
+                            break;
+                        }
                         temp = temp->next;
                     }
                 }
 
-                rule = rule->next;
+                if(!listChanged) rule = rule->next;
             }
 
             page = page->next;
         }
+
+        if(!update->valid) update->updateMiddleValue();
 
         update = update->next;
     }
 }
 
 int Manual::addMiddleValues(bool valid){
-    checkRules();
+    if(valid) checkRules();
 
     int sum = 0;
 

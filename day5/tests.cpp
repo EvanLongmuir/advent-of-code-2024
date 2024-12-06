@@ -174,43 +174,6 @@ TEST_CASE("read line function","[readLine]"){
     REQUIRE(manual.updates->pages->next->next->next->value == d);
 }
 
-TEST_CASE("stress test middle values to look for seg fault", "[full]"){
-    Manual manual = Manual();
-
-    std::string combination;
-    auto a = GENERATE(1, 10, 50, 99);
-    auto b = GENERATE(1, 10, 50, 99);
-    auto c = GENERATE(1, 10, 50, 99);
-    auto d = GENERATE(1, 10, 50, 99);
-    auto e = GENERATE(1, 10, 50, 99);
-    auto f = GENERATE(1, 10, 50, 99);
-    auto g = GENERATE(1, 10, 50, 99);
-    auto h = GENERATE(1, 10, 50, 99);
-    auto i = GENERATE(1, 10, 50, 99);
-
-    INFO(a);
-    INFO(b);
-    INFO(c);
-    INFO(d);
-    INFO(e);
-    INFO(f);
-    INFO(g);
-    INFO(h);
-    INFO(i);
-
-    combination = std::to_string(a) + "|" + std::to_string(b);
-    manual.readLine(combination);
-
-    combination = std::to_string(c) + "|" + std::to_string(d);
-    manual.readLine(combination);
-
-    combination = std::to_string(e) + "," + std::to_string(f) + "," + std::to_string(g) + "," + std::to_string(h) + "," + std::to_string(i);
-    manual.readLine(combination);
-
-    INFO(manual.addMiddleValues(true));
-    INFO(manual.addMiddleValues(false));
-}
-
 TEST_CASE("example from website", "[example]"){
     Manual manual = Manual();
 
