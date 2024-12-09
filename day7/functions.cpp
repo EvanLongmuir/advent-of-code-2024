@@ -47,6 +47,7 @@ bool Calibrations::Equation::checkValid(Number* number, unsigned long currentRes
     if(number == nullptr) return currentResult == value;
     if(checkValid(number->next, currentResult + number->value)) return true;
     if(currentResult != 0 && checkValid(number->next, currentResult * number->value)) return true;
+    if(currentResult != 0 && checkValid(number->next, concatenate(currentResult, number->value))) return true;
     return false;
 }
 
@@ -94,4 +95,10 @@ void Calibrations::readLine(std::string line){
     if(currentlyDigit){
         addToEquation(digit);
     }
+}
+
+unsigned long concatenate(unsigned long num1, unsigned long num2){
+    unsigned long i = 1;
+    while(i <= num2) i = i*10;
+    return (num1 * i) + num2;
 }

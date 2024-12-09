@@ -1,4 +1,5 @@
 #include <string>
+unsigned long concatenate(unsigned long num1, unsigned long num2);
 class Calibrations{
     private:
         struct Equation{

@@ -27,7 +27,7 @@ TEST_CASE("example from website", "[website]"){
     calibration.readLine("21037: 9 7 18 13");
     calibration.readLine("292: 11 6 16 20");
 
-    CHECK(calibration.getSum() == 3749);
+    CHECK(calibration.getSum() == 11387);
 }
 
 TEST_CASE("edge case", "[edge]"){
